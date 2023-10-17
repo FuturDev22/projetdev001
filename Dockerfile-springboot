@@ -1,0 +1,14 @@
+# Étape 1 : Utilisez l'image de base appropriée pour Java
+FROM openjdk:8
+
+# Étape 2 : Configurez le répertoire de travail
+WORKDIR /app
+
+# Étape 3 : Copiez le fichier JAR de votre projet Spring Boot dans le conteneur
+COPY target/projetdev001-1.0.0-SNAPSHOT.jar app.jar
+
+# Étape 4 : Exposez le port sur lequel votre application Spring Boot écoute
+EXPOSE 8088
+
+# Étape 5 : Commande pour exécuter votre application Spring Boot
+CMD ["sh", "-c", "java -jar app.jar && tail -f /dev/null"]

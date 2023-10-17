@@ -1,0 +1,9 @@
+FROM ubuntu:latest
+ARG serveurWeb
+RUN if [ "nginx" = "nginx" ]; then       apt-get update && apt-get install -y nginx;     elif [ "nginx" = "httpd" ]; then       apt-get update && apt-get install -y apache2;     else       echo "Serveur Web non pris en charge : nginx" && exit 1;     fi
+ARG baseDeDonnees
+RUN if [ "mysql" = "mysql" ]; then       apt-get update && apt-get install -y mysql-server;     elif [ "mysql" = "postgres" ]; then       apt-get update && apt-get install -y postgresql;     else       echo "Base de données non prise en charge : mysql" && exit 1;     fi
+EXPOSE 80
+EXPOSE 3307
+EXPOSE 5432
+CMD sh -c "if [ \"nginx\" = \"nginx\" ]; then               nginx -g 'daemon off;';             elif [ \"nginx\" = \"httpd\" ]; then               httpd -DFOREGROUND;             elif [ \"mysql\" = \"mysql\" ]; then               mysqld;             elif [ \"mysql\" = \"postgres\" ]; then               postgres -c config_file=/etc/postgresql/postgresql.conf;             else               echo 'Serveur Web ou base de données non pris en charge';             fi"
